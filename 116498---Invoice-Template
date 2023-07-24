@@ -1,0 +1,303 @@
+<apex:component access="global" allowDML="true" >
+    <apex:attribute name="invoice" type="fax__Invoice__c" description="invoice Object" required="required" />
+  <apex:attribute name="invoiceId" type="Id" description="Attribute on the component." />
+  <head>
+
+<style type="text/css" media="print">   
+
+    table{
+         font-family:Arial,Helvetica,sans-serif;
+    }
+    
+    @top-center {
+         content :element(header);
+    } 
+         
+                          
+    
+    
+    div.footer {
+         font-family:Arial,Helvetica,sans-serif;
+         padding: 0px;
+         width:100%;
+         position: running(footer);
+    }
+    
+  
+   
+  
+    
+           div.footer {
+        display: block;
+        padding: 0px;
+        position: running(footer);
+        align:center;
+            }
+      </style>
+</head>
+<body>
+
+<div class="header"  style="margin-top: 0mm;">
+
+ <div align="center">
+        
+   
+        
+             <img style="height:90px; width:850px;display:{!if(invoice.Invoice_Template__c=="Ventro",'','none')};" src="{!$resource.newvintro}"/>
+             <img style="height:90px; width:850px;display:{!if(invoice.Invoice_Template__c=="Firntec",'','none')};" src="{!$resource.Newfinteclogo}"/>           
+             <img style="height:90px; width:830px;display:{!if(invoice.Invoice_Template__c=="Ventro Firntec",'','none')};" src="{!$resource.BlackVintroFirntec}"/>           
+                </div>
+                </div>    
+    
+  
+  <!-- 
+   <table>
+       
+    
+   <div style="align:right">
+        
+       <tr>
+    
+         <td width="55%"></td>
+        <td width="5%" style="padding-top:1em;padding-left:0em;" align=""> <img src="{!$Resource.Dial}" alt="Paris"  style="width:35px; height:35px;"/></td>
+        <td width="20%"  style="padding-top:2em;color:#6495ED;font-size:14px;">{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'01752 977147',if(invoice.Invoice_Template__c=='Ventro','0845 3810 999',''))}</td>
+    
+    </tr>
+    <tr>  
+        <td width="55%"></td>
+        <td  style="padding-top:1em;padding-left:1em;" align=""> <img src="{!$Resource.Webicon}" alt="Paris" style="width:35px; height:35px;"/></td>
+        <td style="padding-top:2em;color:#6495ED;font-size:14px;">{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'www.firntec.com',if(invoice.Invoice_Template__c=='Ventro','www.ventrogroup.com',''))}</td>
+    </tr>
+    <tr>
+          <td width="55%"></td>   
+        <td  style="padding-top:1em;padding-left:1em;" align=""> <img src="{!$Resource.Mailicon}" alt="Paris" style="width:45px; height:28px;"/></td>
+        <td style="padding-top:2em;color:#6495ED;font-size:14px;">{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'info@firntec.com',if(invoice.Invoice_Template__c=='Ventro','info@ventrogroup.com',''))}</td> 
+    </tr>
+    </div>
+    <br/>
+</table> -->
+<div class="bodycontent">
+
+       <table border="0" cellspacing="0" cellpadding="0"  width="100%" >
+            <tr>
+                <td rowspan="2" width="50%" style="padding-top:1em;font-size:16px">
+                    Address:<br/>
+                    <apex:outputfield value="{!invoice.Address__c}" ></apex:outputfield>  
+                </td>
+                <td width="50%" style="background-color:white;padding-top:1em;"> </td>
+            </tr>
+            <tr>
+                <td width="50%" style="padding-top:0em;">
+                    <table  style="border: 2px solid #CCCCCC;" cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td width="33%" align="center" style="font-Size:12px;"> PLEASE PAY BY <br/> <br/><b style="font-size:16px">  <apex:outputfield value="{!invoice.fax__Due_Date__c}"/></b></td>
+                            <td width="34%" align="center" style="font-Size:12px;background-color:#A9A9A9;color:white;">AMOUNT<br/><br/><b style="color:white;font-size:16px"><apex:outputfield value="{!invoice.fax__Grand_Total__c}"/></b></td>
+                            <td width="33%" align="center" style="font-Size:12px;">INVOICE DATE<br/><br/><b style="font-size:16px"><apex:outputfield value="{!invoice.fax__Date__c}"/></b></td>
+                           
+                        </tr>
+                   
+                    </table>
+                </td>
+            </tr>    
+        </table>
+       <table  cellspacing="0" cellpadding="0" width="100%">
+                        <tr>
+                            <td width="50%" align="center" style="font-Size:12px;"></td>
+                            <td width="50%" align="right" style="padding-bottom:0.6em;font-weight:bold;font-Size:22px;">INVOICE NO.{!invoice.name}</td>
+                       
+                        </tr>        
+
+                        <tr>
+                            <td width="50%" align="center" style="font-Size:12px;"></td>
+                            <td width="50%" align="left" style="padding-bottom:4mm;padding-left:1em;font-Size:16px;background-color:#CCCCCC;">
+                                <b>Job No.: </b>{!invoice.fax__visit__r.name}<br/>
+                                <br/>
+                                <b>Order No.: </b>{!invoice.Order_NO__c}<br/>
+                                <br/>
+                                <b>Site.: </b>{!invoice.fax__Site__r.Name}
+                                <br/><br/>
+                                <b>Customer.: </b>{!invoice.fax__Site__r.Parent.Name}</td>
+                       </tr>    
+                            
+        </table>
+        <table width="100%" cellspacing="0" cellpadding="0" >
+            <tr> <td style="font-size:16px"><b>Description</b></td></tr>
+            <tr> <td>{!invoice.fax__visit__r.fax__Visit_Description__c}</td></tr>
+            <tr><td>
+        <apex:outputPanel rendered="{!invoice.fax__Include_Service_Terms_Conditions__c}">
+        <apex:outputField rendered="{!!invoice.fax__Include_Service_Terms_Conditions__c}"><br/><br/><br/></apex:outputField>
+        </apex:outputPanel>
+            </td></tr>    
+     </table>      
+<br/>
+<br/>
+        <table style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;" width="100%" height="100%">   
+            <tr>
+       
+                <td colspan="9" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="20%">&nbsp; <b>Invoice Line Items </b></td>
+            
+            </tr>
+     
+            <tr>
+       
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="20%">&nbsp;Product</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Quantity</td>
+                <td align="center"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Unit Price</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Total Amount (Excl Tax)</td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" border="5px" align="center" width="10%">Discount %</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Discount Amt</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Tax(%)</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Tax Amount</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Total Amount</td>
+            </tr>
+       <apex:repeat value="{!invoice.fax__Invoice_Line_Items__r}" var="inv">
+            <tr>
+       
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="20%">{!inv.fax__Product__r.name}</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">{!inv.fax__Qty__c}</td>
+                <td align="center"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Unit_Price__c}" /></td>
+                <td align="right" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Total_Amount_Excl_Tax__c}" /></td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" border="5px" align="center" width="10%"><apex:outputfield value="{!inv.fax__Discount__c}"/></td>
+                <td align="right" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Discount_Amt__c}" /></td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Tax__c}"/></td>
+                <td align="right" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Tax_Amount__c}" /></td>
+                <td align="right" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%"><apex:outputfield value="{!inv.fax__Total_Amount__c}" /></td>
+            </tr>
+     </apex:repeat> 
+        </table> 
+  <br/>
+    
+        <table style="font-family:Verdana, Arial, Helvetica, sans-serif;font-size:12px;border: 1px solid black;border-collapse: collapse;" width="100%" height="100%">   
+            <tr>
+       
+                <td colspan="6" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" >&nbsp;<b> Charges </b></td>
+            </tr>
+            <tr>
+       
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="20%">&nbsp;Type</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="33%">Description</td>
+                <td align="center"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="12%">Amount</td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="10%">Tax % </td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;"  align="center" width="12%">Tax Amount </td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" width="12%">Total Charge</td>
+            
+            </tr>
+       <apex:repeat value="{!invoice.fax__Invoice_Charges__r}" var="chg">
+            <tr>
+       
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" >{!chg.fax__Type_of_Charge__c}</td>
+                <td align="left" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" >{!chg.fax__Description__c}</td>
+                <td align="right"  style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" ><apex:outputfield value="{!chg.fax__Amount__c}" /></td>
+                <td align="center" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" ><apex:outputfield value="{!chg.fax__Tax_del__c}"/></td>
+                <td style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" border="5px" align="right" ><apex:outputfield value="{!chg.fax__Tax_Amount__c}"/></td>
+                <td align="right" style="border: 1px solid black;border-collapse: collapse;border-bottom:1px solid black;" ><apex:outputfield value="{!chg.fax__Total_Charge__c}"/></td>
+            
+            </tr>
+        </apex:repeat> 
+        </table>    
+
+    <table style="border-bottom: 1px solid black;  border-top: 1px solid black;" width="100%" cellspacing="0" cellpadding="0" >
+            <tr  style=""> 
+                <td rowspan="6" width="60%" style="border-left:none;font-size:12px">Thank you</td>
+                <td align="right" width="25%" style="font-size:12px"><b>Sub-Total ex VAT</b></td>
+                <td align="right" width="15%"><apex:outputfield value="{!invoice.fax__Total_Amount__c}"/></td>
+            </tr>
+            <tr>
+                <td align="right" style="font-size:12px"><b>Shipping &amp; Handling</b></td>
+                <td align="right"><apex:outputfield value="{!invoice.fax__Shipping_Handling__c}"/></td>
+            </tr>
+     
+            <tr>
+                <td align="right" style="font-size:12px"><b>VAT@20%</b></td>
+                <td align="right"><apex:outputfield value="{!invoice.fax__Total_Taxs__c}"/></td>
+            </tr>
+     
+            <tr>
+                <td align="right" style="font-size:12px"><b>Total inc VAT</b></td>
+                <td align="right"><apex:outputfield value="{!invoice.fax__Grand_Total__c}"/></td>
+            </tr>
+     
+            <tr>
+                <td align="right" style="font-size:12px"><b>Amount Applied</b></td>
+                <td align="right"><apex:outputfield value="{!invoice.fax__Amount_Paid__c}"/></td>
+            </tr>
+     
+            <tr>
+                <td align="right" style="font-size:12px"><b>Balance Due</b></td>
+                <td align="right"><apex:outputfield value="{!invoice.fax__Amount_Due__c}"/></td>
+            </tr>
+    </table>          
+       
+  <div class="footer">
+
+    <table border="0" style="border-top: 1px dashed black;" width="100%" cellspacing="0" cellpadding="0" >
+            <tr  style=""> 
+
+                <td colspan="3" align="left" width="48%" style="font-size:18px; font-weight:bold;"><b>How To Pay</b></td>
+                <td colspan="1" align="left" width="4%" style="font-size:20px; font-weight:bold;"></td>
+                <td colspan="1" align="left" width="21%" style="font-size:20px; font-weight:bold;"></td>
+                <td colspan="1" align="center" width="27%" style="padding-top:.48em;padding-right:0.25em;background-color:#A9A9A9;color:white;"><b>INVOICE NO.{!invoice.name}</b></td>
+            </tr>
+            <tr>
+                <td align="left" width="8%" rowspan="2" style="font-size:25px; font-weight:bold;"><img src="{!$Resource.Mail}"  width="33" height="35"/></td>
+                <td colspan="2" style="padding-top:-1cm;"><p style="font-size:10px;display:inline;line-height: 1.4;">
+                <b>Mail</b><br/>
+                Detach this section and mail cheque to:<br/>
+                <b>{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'Firntec LTD','')}<br/>
+                Aquilam House<br/>
+                7 DarklakeView<br/></b></p>
+                </td>
+                <td align="left" width="8%" style="font-size:25px; font-weight:bold;"><img src="{!$Resource.Computericon}"  width="35" height="50"/></td>
+                <td colspan="3"><p style="font-size:10px;display:inline;line-height: 1.4;"><b>Direct Deposit</b><br/>
+                    Bank <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'Natwest',if(invoice.Invoice_Template__c=='Ventro','Lloyds',''))}</b><br/>
+                    Acc. Name <b>&nbsp;&nbsp;{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'Firntec LTD',if(invoice.Invoice_Template__c=='Ventro','Ventro LTD',''))}</b><br/>
+                    Sort Code <b>&nbsp;&nbsp;&nbsp;&nbsp;{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'52-10-42',if(invoice.Invoice_Template__c=='Ventro','301274',''))}</b><br/>
+                    Acc. No. <b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'16177118',if(invoice.Invoice_Template__c=='Ventro','68939160',''))}</b></p>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"  width="45%" style="padding-top:-1cm;padding-right:-2cm;">
+                    <table border="0" cellspacing="0" cellpadding="0" style="border: 0px solid #CCCCCC;padding-top:-1cm;padding-right:-2cm;" width="100%">
+                        <tr>
+                            <td width="100%"><p style="font-size:10px;display:inline;line-height: 1.4;">
+                            <b>VAT Number: {!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'58236 20504',if(invoice.Invoice_Template__c=='Ventro','170349416',''))}</b><br/>
+                            <b>Company Registration Number: {!if(OR(invoice.Invoice_Template__c=='Firntec',invoice.Invoice_Template__c=='Ventro Firntec'),'3460282',if(invoice.Invoice_Template__c=='Ventro','8765695',''))}</b>
+                            </p></td>
+                        </tr>
+                    </table>
+                </td>
+                        <td colspan="4" width="55%">
+                            <table  border="0"  style="border: 0px solid #CCCCCC;padding-top:8px;"  width="100%">
+                                <tr>
+                                    <td width="20%" align="left" style="background-color:#e9e9e9;"><b style="font-size:12px">DUE DATE</b></td>
+                                    <td width="25%" align="center" style="background-color:#e9e9e9;"><b style="font-size:12px"><apex:outputText value="{0,date, dd'/'MM'/'yyyy}">
+                                    <apex:param value="{!invoice.fax__Due_Date__c}"/></apex:outputText></b> 
+                                    </td>
+                                    <td width="30%" align="left" style="background-color:#e9e9e9;"><b style="font-size:12px">AMOUNT DUE:</b></td>
+                                    <td width="25%" align="center" style="background-color:#e9e9e9;"><b style="font-size:12px"><apex:outputfield value="{!invoice.fax__Grand_Total__c}"/></b></td>
+                                </tr>
+
+                            </table>
+                
+                            </td>
+        </tr>
+    </table>
+      <center style="display:{!if(invoice.Invoice_Template__c=='Ventro','','none;')}">  <b style="font-size:10px;">Ventro LTD Company</b>&nbsp;&nbsp;&nbsp;&nbsp;<b style="font-size:10px"> Registration Number: 8765695</b>
+</center>
+      <br/><br/><br/>
+    <div class="footer"  style="height:5mm;margin-left: -15mm; margin-right:-15mm;margin-bottom:5mm; margin-top:4mm;">
+            <table border="0" width="100%" height="50%" bgcolor="{!if(invoice.Invoice_Template__c=='Ventro','#2b3770',if(invoice.Invoice_Template__c='Ventro Firntec','Black',if(invoice.Invoice_Template__c=='Firntec','green','')))}" style="">
+        
+                  <tr width="100%" >
+                 <td width="100%"  align="center" Style="font-size:12px;color:white;padding-bottom:3mm;padding-top:3mm;"> 
+                              {!if(invoice.Invoice_Template__c=="Firntec","Company No.  13460282   |   VAT No.  385 6179 53",if(invoice.Invoice_Template__c=="Ventro","Company No.  8765695   |   VAT No.  170 3494 16",""))}                    
+
+                      </td>
+                </tr>
+        </table>
+    </div>   
+  
+</div>
+ </div>
+</body>
+</apex:component>
